@@ -6,21 +6,26 @@
 //
 
 import Cocoa
+import WebKit
 
-class ViewController: NSViewController {
+class ViewController: NSViewController, WKUIDelegate {
+    var webView: WKWebView!
+
+    override func loadView() {
+        let webConfiguration = WKWebViewConfiguration();
+        webConfiguration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs");
+        webView = WKWebView(frame: CGRect(x:0, y:0, width:800, height:600), configuration:webConfiguration);
+        webView.uiDelegate = self;
+        view = webView;
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        let requestUrl = URL(string: "https://passport.yandex.com/auth?origin=music_button-header&retpath=https%3A%2F%2Fmusic.yandex.com%2Fhome")
+        // self.webView.title = "Yandex.Music Desktop";
+        self.webView.load(URLRequest(url: requestUrl!));
+        self.view = webView;
+        
     }
-
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
-    }
-
-
 }
-
